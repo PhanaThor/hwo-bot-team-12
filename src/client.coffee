@@ -127,8 +127,8 @@ class Client extends Tcp.Client
           meno = 0
           
           if gameInfo.level.ifConfigured == 0
-            gameInfo.level.top = message.data.conf.ballRadius
-            gameInfo.level.bottom = message.data.conf.maxHeight - message.data.conf.ballRadius
+            gameInfo.level.top = message.data.conf.ballRadius / 2
+            gameInfo.level.bottom = message.data.conf.maxHeight - (message.data.conf.ballRadius / 2)
             gameInfo.level.left = message.data.conf.ballRadius
             gameInfo.level.right = message.data.conf.maxWidth - (message.data.conf.ballRadius + message.data.conf.paddleWidth)
             gameInfo.level.ifConfigured = 1
@@ -138,6 +138,11 @@ class Client extends Tcp.Client
           
           hunchY = hunchBallEndLocation(3)
           hunchY -= (message.data.conf.paddleHeight / 2)
+          if message.data.ball.pos.x < 100
+            if message.data.ball.pos.y > hunchY
+              hunchY = hunchY + 20
+            else
+              hunchY = hunchY - 20
           lahellaHunchia = kuinkaLahella(hunchY, message.data.left.y)
 
 
@@ -146,23 +151,23 @@ class Client extends Tcp.Client
           meno = think(hunchY, message.data.left.y)
           if lahellaHunchia < 30
             if meno < 0
-               meno = -0.5
+               meno = -0.7
             else 
-               meno = 0.5
+               meno = 0.7
 
           if lahellaHunchia < 10
+            if meno < 0
+               meno = -0.4
+            else 
+               meno = 0.4
+          
+          if lahellaHunchia < 5
             if meno < 0
                meno = -0.2
             else 
                meno = 0.2
-          
-          if lahellaHunchia < 5
-            if meno < 0
-               meno = -0.1
-            else 
-               meno = 0.1
 
-          if lahellaHunchia < 2
+          if lahellaHunchia < 1
             meno = 0.0
 
           
