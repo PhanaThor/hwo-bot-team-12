@@ -1,12 +1,13 @@
 #!/bin/bash
 
-which npm > /dev/null
-if [ "$?" -ne "0" ]; then
-echo "node package manager (npm) missing. Please install node.js (http://nodejs.org)."
-  exit 1
+set -e
+
+if ! which npm &> /dev/null; then
+    echo "node package manager (npm) missing. Please install node.js (http://nodejs.org)." >&2
+    exit 1
 fi
 
-echo "Installing dependencies..."
+mkdir -p log .tmp
 
-npm install coffee-script
+echo "Installing dependencies..."
 npm install binary
