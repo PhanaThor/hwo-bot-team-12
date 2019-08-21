@@ -1,0 +1,77 @@
+hunchBallEndLocation = (message, gameInfo) ->
+ # initial hunch is center of level:
+ hunch = message.conf.maxHeight / 2
+
+ # lets play forward for temp ball and see where it goes:
+ tempBall = message.ball
+ tempBallVectorX = gameInfo.ballVectorX
+ tempBallVectorY = gameInfo.ballVectorY
+
+ # loop until we are at skin of our own paddle:
+ while tempBall.pos.y > message.conf.paddleWidth
+  tempBall.pos.X += tempBallVectorX
+  tempBall.pos.Y += tempBallVectorY
+
+  # at the level borders:
+  if tempBall.pos.Y > gameInfo.level.bottom or tempBall.pos.Y < gameInfo.level.top
+   tempBallVectorY = -tempBallVectorY
+   tempBall.pos.Y += tempBallVectorY
+
+  # at the enemy gates:
+  if tempBall.pos.X > gameInfo.level.right
+   tempBallVectorX = -tempBallVectorX
+   tempBallVectorX += -0.4
+   tempBall.pos.X += tempBallVectorX
+
+ # loop is over, returning the hunch:
+ hunch = tempBall.pos.Y
+ return hunch
+
+gameInfo =
+  level:
+    top: 0
+    bottom: 480
+    left: 0
+    right: 640
+  ballVectorX: 0
+  ballVectorY: 0
+  ballVelocityInPaddleBounce: 0
+  previousTime: 0
+  previousBallX: 0
+  previousBallY: 0
+
+
+prepareLevel = (message) ->
+ gameInfo.level =
+   top: message.conf.ballRadius
+   bottom: message.conf.maxHeight - message.conf.ballRadius
+   left: message.conf.ballRadius
+   right: message.conf.maxWidth - message.conf.ballRadius
+
+
+CalculateBallVector: (time, ballX, ballY) ->
+    timeSpan = time - gameInfo.previousTime
+    moveX = ballX - gameInfo.previousBallX
+    moveY = ballY - gameInfo.previousBallY
+        
+    gameInfo.ballVectorX = moveX / timeSpan
+    gameInfo.ballVectorY = moveY / timeSpan   
+    
+    gameInfo.previousTime = time
+    gameInfo.previousBallX = ballX
+    gameInfo.previousBallY = ballY
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
