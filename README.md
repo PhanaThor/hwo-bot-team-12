@@ -18,11 +18,11 @@ Stop the bot with `stop.sh`.
 
 ## Credits
 
-####Original client base 
+###Original client base 
 
 Copyright (C) 2012 Aki Kaivola, Heikki Pora, Lauri Lehmijoki, Toni Strandell.
 
-####A.I. programming and customization
+###A.I. programming and customization
 
 Copyright (C) 2012 Ville Kangas, Tommi Laakso.
 
